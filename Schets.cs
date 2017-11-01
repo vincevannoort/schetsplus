@@ -33,6 +33,10 @@ namespace SchetsEditor
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
+            foreach(SchetsObject actie in this.acties)
+            {
+                actie.Draw(gr);
+            }
         }
         public void Schoon()
         {

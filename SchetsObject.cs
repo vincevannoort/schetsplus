@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace SchetsEditor
 {
-    public class SchetsObject
+    public abstract class SchetsObject
     {
         protected Point startpunt, eindpunt;
 
@@ -17,6 +17,8 @@ namespace SchetsEditor
             this.startpunt = start;
             this.eindpunt = eind;
         }
+
+        public abstract void Draw(Graphics g);
     }
 
     public class TekstObject : SchetsObject
@@ -25,19 +27,31 @@ namespace SchetsEditor
         protected Font font;
         string tekst;
 
-        public TekstObject(Brush kwast, String tekst, Point start) : base(start)
+        public TekstObject(Brush kwast, String tekst, Font font, Point start) : base(start)
         {
             this.kwast = kwast;
             this.tekst = tekst;
+            this.font = font;
+        }
+
+        public override void Draw(Graphics g)
+        {
+            g.DrawString(tekst, font, kwast, startpunt, StringFormat.GenericTypographic);
         }
     }
 
     public class LijnObject : SchetsObject
     {
         protected Pen pen;
-        public LijnObject(Pen pen, Point start, Point eind) : base(start)
+
+        public LijnObject(Pen pen, Point start, Point eind) : base(start, eind)
         {
             this.pen = pen;
+        }
+
+        public override void Draw(Graphics g)
+        {
+            g.DrawLine(pen, startpunt, eindpunt);
         }
     }
 
@@ -57,6 +71,17 @@ namespace SchetsEditor
         {
             this.kwast = kwast;
         }
+
+        public override void Draw(Graphics g)
+        {
+            if (pen != null)
+            {
+                g.DrawRectangle(pen, TweepuntTool.Punten2Rechthoek(startpunt, eindpunt));
+            }
+            else if (kwast != null) {
+                g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(startpunt, eindpunt));
+            }
+        }
     }
 
     public class CirkelObject : SchetsObject
@@ -74,6 +99,17 @@ namespace SchetsEditor
         public CirkelObject(Brush kwast, Point start, Point eind) : base (start, eind)
         {
             this.kwast = kwast;
+        }
+
+        public override void Draw(Graphics g)
+        {
+            if (pen != null)
+            {
+                g.DrawEllipse(pen, TweepuntTool.Punten2Rechthoek(startpunt, eindpunt));
+            }
+            else if (kwast != null) {
+                g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(startpunt, eindpunt));
+            }
         }
     }
 }

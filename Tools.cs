@@ -70,7 +70,7 @@ namespace SchetsEditor
                 startpunt.X += (int)sz.Width;
                 s.Invalidate();
 
-                this.VoegActieToe(new TekstObject(kwast, tekst, startpunt));
+                this.VoegActieToe(new TekstObject(kwast, tekst, font, startpunt));
             }
         }
     }
@@ -127,7 +127,7 @@ namespace SchetsEditor
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   
-            g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
+            // g.DrawRectangle(MaakPen(kwast,3), TweepuntTool.Punten2Rechthoek(p1, p2));
         }
 
         public override void Compleet(Graphics g, Point p1, Point p2)
@@ -145,7 +145,7 @@ namespace SchetsEditor
 
         public override void Compleet(Graphics g, Point p1, Point p2)
         {   
-            g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+            // g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
             this.VoegActieToe(new RechthoekObject(kwast, p1, p2));
         }
     }
@@ -158,7 +158,7 @@ namespace SchetsEditor
 
 		public override void Bezig(Graphics g, Point p1, Point p2)
 		{
-            g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
+            // g.DrawEllipse(MaakPen(kwast, 3), TweepuntTool.Punten2Rechthoek(p1, p2));
 		}
 
         public override void Compleet(Graphics g, Point p1, Point p2)
@@ -176,7 +176,7 @@ namespace SchetsEditor
 
 		public override void Compleet(Graphics g, Point p1, Point p2)
 		{
-            g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+            // g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
             this.VoegActieToe(new CirkelObject(kwast, p1, p2));
 		}
 	}
@@ -189,7 +189,7 @@ namespace SchetsEditor
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   
-            g.DrawLine(MaakPen(this.kwast,3), p1, p2);
+            // g.DrawLine(MaakPen(this.kwast,3), p1, p2);
         }
 
         public override void Compleet(Graphics g, Point p1, Point p2)
@@ -220,7 +220,7 @@ namespace SchetsEditor
 
         public override void Bezig(Graphics g, Point p1, Point p2)
         {   
-            g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
+            // g.DrawLine(MaakPen(Brushes.White, 7), p1, p2);
         }
     }
 }
