@@ -159,6 +159,18 @@ namespace SchetsEditor
             b.Location = new Point(  0, 0); 
             b.Click += schetscontrol.Schoon; 
             paneel.Controls.Add(b);
+
+			b = new Button();
+			b.Text = "Undo";
+			b.Location = new Point(400, 0);
+			b.Click += schetscontrol.Undo;
+			paneel.Controls.Add(b);
+
+			b = new Button();
+			b.Text = "Redo";
+			b.Location = new Point(480, 0);
+			//b.Click += schetscontrol.Schoon;
+			paneel.Controls.Add(b);
             
             b = new Button(); 
             b.Text = "Rotate"; 
