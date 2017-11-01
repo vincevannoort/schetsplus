@@ -7,6 +7,7 @@ namespace SchetsEditor
     public class Schets
     {
         private Bitmap bitmap;
+        public List<SchetsObject> acties = new List<SchetsObject>();
         
         public Schets()
         {

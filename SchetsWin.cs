@@ -43,14 +43,16 @@ namespace SchetsEditor
 
         public SchetsWin()
         {
-            ISchetsTool[] deTools = { new PenTool()         
-                                    , new LijnTool()
-                                    , new RechthoekTool()
-                                    , new VolRechthoekTool()
-                                    , new CirkelTool()
-                                    , new VolCirkelTool()
-                                    , new TekstTool()
-                                    , new GumTool()
+            schetscontrol = new SchetsControl();
+
+            ISchetsTool[] deTools = { new PenTool(schetscontrol.Schets)         
+                                    , new LijnTool(schetscontrol.Schets)
+                                    , new RechthoekTool(schetscontrol.Schets)
+                                    , new VolRechthoekTool(schetscontrol.Schets)
+                                    , new CirkelTool(schetscontrol.Schets)
+                                    , new VolCirkelTool(schetscontrol.Schets)
+                                    , new TekstTool(schetscontrol.Schets)
+                                    , new GumTool(schetscontrol.Schets)
                                     };
             String[] deKleuren = { "Black", "Red", "Green", "Blue"
                                  , "Yellow", "Magenta", "Cyan" 
@@ -59,7 +61,6 @@ namespace SchetsEditor
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
 
-            schetscontrol = new SchetsControl();
             schetscontrol.Location = new Point(64, 10);
             schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
                                        {   vast=true;  
