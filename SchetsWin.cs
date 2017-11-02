@@ -94,8 +94,10 @@ namespace SchetsEditor
 
         public void importeerBitmap(String filenaam)
         {
-            // LATER NOG WINDOW RESIZEN OP BASIS VAN BESTAND
-            schetscontrol.Schets.BitmapGraphics.DrawImage(new Bitmap(filenaam), 0, 0);
+            Bitmap bitmap = new Bitmap(filenaam);
+            schetscontrol.Schets.VeranderAfmeting(bitmap.Size);
+            this.Size = new Size(bitmap.Width + 70, bitmap.Height + 50);
+            schetscontrol.Schets.BitmapGraphics.DrawImage(bitmap, 0, 0);
         }
 
         public void importeerSchets()
