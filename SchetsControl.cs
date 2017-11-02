@@ -29,7 +29,8 @@ namespace SchetsEditor
         }
 
         private void teken(object o, PaintEventArgs pea)
-        {   schets.Teken(pea.Graphics);
+        {   
+            schets.Teken(pea.Graphics);
         }
 
         private void veranderAfmeting(object o, EventArgs ea)
@@ -66,8 +67,11 @@ namespace SchetsEditor
 
 		public void Undo(object o, EventArgs ea)
 		{
-            schets.acties.RemoveAt(schets.acties.Count - 1);
-			this.Invalidate();
+            if (schets.acties.Count > 0)
+            {
+                schets.acties.RemoveAt(schets.acties.Count - 1);
+                this.Invalidate();
+            }
 		}
     }
 }

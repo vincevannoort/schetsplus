@@ -13,10 +13,17 @@ namespace SchetsEditor
         {
             bitmap = new Bitmap(1, 1);
         }
+
+        public Bitmap getBitmap()
+        {
+            return bitmap;
+        }
+
         public Graphics BitmapGraphics
         {
             get { return Graphics.FromImage(bitmap); }
         }
+
         public void VeranderAfmeting(Size sz)
         {
             if (sz.Width > bitmap.Size.Width || sz.Height > bitmap.Size.Height)
@@ -30,19 +37,22 @@ namespace SchetsEditor
                 bitmap = nieuw;
             }
         }
+
         public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
             foreach(SchetsObject actie in this.acties)
             {
-                actie.Draw(gr);
+                actie.Teken(gr);
             }
         }
+
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
         }
+
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);

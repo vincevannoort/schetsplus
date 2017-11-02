@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -10,7 +11,7 @@ namespace SchetsEditor
     public class SchetsWin : Form
     {   
         MenuStrip menuStrip;
-        SchetsControl schetscontrol;
+        public SchetsControl schetscontrol; // LATER ANDERS OPLOSSEN DAN MET PUBLIC? GETTER AND SETTER?
         ISchetsTool huidigeTool;
         Panel paneel;
         bool vast;
@@ -45,51 +46,61 @@ namespace SchetsEditor
         {
             schetscontrol = new SchetsControl();
 
-            ISchetsTool[] deTools = { new PenTool(schetscontrol.Schets)         
-                                    , new LijnTool(schetscontrol.Schets)
-                                    , new RechthoekTool(schetscontrol.Schets)
-                                    , new VolRechthoekTool(schetscontrol.Schets)
-                                    , new CirkelTool(schetscontrol.Schets)
-                                    , new VolCirkelTool(schetscontrol.Schets)
-                                    , new TekstTool(schetscontrol.Schets)
-                                    , new GumTool(schetscontrol.Schets)
-                                    };
-            String[] deKleuren = { "Black", "Red", "Green", "Blue"
-                                 , "Yellow", "Magenta", "Cyan" 
-                                 };
+            ISchetsTool[] deTools = { new PenTool(schetscontrol.Schets), 
+                                      new LijnTool(schetscontrol.Schets), 
+                                      new RechthoekTool(schetscontrol.Schets), 
+                                      new VolRechthoekTool(schetscontrol.Schets), 
+                                      new CirkelTool(schetscontrol.Schets), 
+                                      new VolCirkelTool(schetscontrol.Schets), 
+                                      new TekstTool(schetscontrol.Schets), 
+                                      new GumTool(schetscontrol.Schets) };
+
+            String[] deKleuren = { "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan" };
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
 
             schetscontrol.Location = new Point(64, 10);
-            schetscontrol.MouseDown += (object o, MouseEventArgs mea) =>
-                                       {   vast=true;  
-                                           huidigeTool.MuisVast(schetscontrol, mea.Location); 
+            schetscontrol.MouseDown += (object o, MouseEventArgs mea) => {   
+                                            vast=true;  
+                                            huidigeTool.MuisVast(schetscontrol, mea.Location); 
                                        };
-            schetscontrol.MouseMove += (object o, MouseEventArgs mea) =>
-                                       {   if (vast)
-                                           huidigeTool.MuisDrag(schetscontrol, mea.Location); 
+            schetscontrol.MouseMove += (object o, MouseEventArgs mea) => {   
+                                            if (vast)
+                                            huidigeTool.MuisDrag(schetscontrol, mea.Location); 
                                        };
-            schetscontrol.MouseUp   += (object o, MouseEventArgs mea) =>
-                                       {   if (vast)
-                                           huidigeTool.MuisLos (schetscontrol, mea.Location);
-                                           vast = false; 
+            schetscontrol.MouseUp   += (object o, MouseEventArgs mea) => {   
+                                            if (vast)
+                                            huidigeTool.MuisLos (schetscontrol, mea.Location);
+                                            vast = false; 
                                        };
-            schetscontrol.KeyPress +=  (object o, KeyPressEventArgs kpea) => 
-                                       {   huidigeTool.Letter  (schetscontrol, kpea.KeyChar); 
-                                       };
+            schetscontrol.KeyPress +=  (object o, KeyPressEventArgs kpea) =>  {   
+                                            huidigeTool.Letter  (schetscontrol, kpea.KeyChar); 
+                                        };
             this.Controls.Add(schetscontrol);
 
             menuStrip = new MenuStrip();
             menuStrip.Visible = false;
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
+            this.maakAfbeeldingMenu();
             this.maakToolMenu(deTools);
             this.maakAktieMenu(deKleuren);
             this.maakToolButtons(deTools);
             this.maakAktieButtons(deKleuren);
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
+        }
+
+        public void importeerBitmap(String filenaam)
+        {
+            // LATER NOG WINDOW RESIZEN OP BASIS VAN BESTAND
+            schetscontrol.Schets.BitmapGraphics.DrawImage(new Bitmap(filenaam), 0, 0);
+        }
+
+        public void importeerSchets()
+        {
+
         }
 
         private void maakFileMenu()
@@ -111,6 +122,12 @@ namespace SchetsEditor
                 item.Click += this.klikToolMenu;
                 menu.DropDownItems.Add(item);
             }
+            menuStrip.Items.Add(menu);
+        }
+
+        private void maakAfbeeldingMenu()
+        {   
+            ToolStripMenuItem menu = new ToolStripMenuItem("Afbeelding");
             menuStrip.Items.Add(menu);
         }
 

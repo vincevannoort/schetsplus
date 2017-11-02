@@ -18,7 +18,7 @@ namespace SchetsEditor
             this.eindpunt = eind;
         }
 
-        public abstract void Draw(Graphics g);
+        public abstract void Teken(Graphics g);
     }
 
     public class TekstObject : SchetsObject
@@ -34,7 +34,7 @@ namespace SchetsEditor
             this.font = font;
         }
 
-        public override void Draw(Graphics g)
+        public override void Teken(Graphics g)
         {
             g.DrawString(tekst, font, kwast, startpunt, StringFormat.GenericTypographic);
         }
@@ -49,7 +49,7 @@ namespace SchetsEditor
             this.pen = pen;
         }
 
-        public override void Draw(Graphics g)
+        public override void Teken(Graphics g)
         {
             g.DrawLine(pen, startpunt, eindpunt);
         }
@@ -72,7 +72,7 @@ namespace SchetsEditor
             this.kwast = kwast;
         }
 
-        public override void Draw(Graphics g)
+        public override void Teken(Graphics g)
         {
             if (pen != null)
             {
@@ -101,7 +101,7 @@ namespace SchetsEditor
             this.kwast = kwast;
         }
 
-        public override void Draw(Graphics g)
+        public override void Teken(Graphics g)
         {
             if (pen != null)
             {
