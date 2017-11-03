@@ -50,6 +50,7 @@ namespace SchetsEditor
         public void Schoon()
         {
             Graphics gr = Graphics.FromImage(bitmap);
+            acties.Clear();
             gr.FillRectangle(Brushes.White, 0, 0, bitmap.Width, bitmap.Height);
         }
 

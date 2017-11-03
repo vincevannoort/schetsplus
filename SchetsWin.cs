@@ -83,7 +83,6 @@ namespace SchetsEditor
             menuStrip.Visible = false;
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
-            this.maakAfbeeldingMenu();
             this.maakToolMenu(deTools);
             this.maakAktieMenu(deKleuren);
             this.maakToolButtons(deTools);
@@ -124,12 +123,6 @@ namespace SchetsEditor
                 item.Click += this.klikToolMenu;
                 menu.DropDownItems.Add(item);
             }
-            menuStrip.Items.Add(menu);
-        }
-
-        private void maakAfbeeldingMenu()
-        {   
-            ToolStripMenuItem menu = new ToolStripMenuItem("Afbeelding");
             menuStrip.Items.Add(menu);
         }
 
