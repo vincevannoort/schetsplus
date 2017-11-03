@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 
 namespace SchetsEditor
@@ -200,15 +201,28 @@ namespace SchetsEditor
 
     public class PenTool : LijnTool
     {
+        protected List<LijnObject> lijnen;
         public PenTool(Schets s): base(s) { }
 
         public override string ToString() { return "pen"; }
 
-        public override void MuisDrag(SchetsControl s, Point p)
-        {   
-            this.MuisLos(s, p);
-            this.MuisVast(s, p);
+        public override void MuisVast(SchetsControl s, Point p)
+        {
+            startpunt = p;
+            kwast = new SolidBrush(s.PenKleur);
+            lijnen = new List<LijnObject>();
         }
+
+        public override void MuisDrag(SchetsControl s, Point p)
+        {
+            lijnen.Add(new LijnObject(MaakPen(this.kwast, 3), startpunt, p));
+            startpunt = p;
+        }
+
+		public override void Compleet(Graphics g, Point p1, Point p2)
+		{
+            this.VoegActieToe(new PenObject(MaakPen(this.kwast, 3), lijnen, p1, p2));
+		}
     }
     
     public class GumTool : PenTool

@@ -1,11 +1,22 @@
 ﻿using System;
 using System.Drawing;
+using System.Collections.Generic;
 
 namespace SchetsEditor
 {
     public abstract class SchetsObject
     {
-        protected Point startpunt, eindpunt;
+        protected Point startpunt;
+        protected Point eindpunt;
+
+        public Point Startpunt {
+            get { return startpunt; }
+        }
+
+		public Point Eindpunt
+		{
+			get { return eindpunt; }
+		}
 
         public SchetsObject(Point start)
         {
@@ -54,6 +65,26 @@ namespace SchetsEditor
             g.DrawLine(pen, startpunt, eindpunt);
         }
     }
+
+	public class PenObject : SchetsObject
+	{
+		protected Pen pen;
+        protected List<LijnObject> lijnen;
+
+		public PenObject(Pen pen, List<LijnObject> lijnen, Point start, Point eind) : base(start, eind)
+		{
+			this.pen = pen;
+            this.lijnen = lijnen;
+		}
+
+		public override void Teken(Graphics g)
+		{
+            foreach (LijnObject lijn in lijnen)
+            {
+                g.DrawLine(pen, lijn.Startpunt, lijn.Eindpunt);       
+            }
+		}
+	}
 
     public class RechthoekObject : SchetsObject
     {
