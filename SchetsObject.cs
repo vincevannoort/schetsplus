@@ -69,36 +69,54 @@ namespace SchetsEditor
             g.DrawLine(pen, startpunt, eindpunt);
         }
 
-        public static double Afstand(Point a, Point b)
-        {
-            double fa = (a.X - b.X);
-            double fb = (a.Y - b.Y);
-            return Math.Sqrt(fa * fa + fb * fb);
-        }
+        private double Afstand(Point point, Point segmentstart, Point segmentend)
+		{
+			// credits to: http://csharphelper.com/blog/2016/09/find-the-shortest-distance-between-a-point-and-a-line-segment-in-c/
+			Point closest;
+			float dx = segmentend.X - segmentstart.X;
+			float dy = segmentend.Y - segmentstart.Y;
 
-        // WERKT NOG NIET
+			if ((dx == 0) && (dy == 0))
+			{
+				// It's a point not a line segment.
+				closest = segmentstart;
+				dx = point.X - segmentstart.X;
+				dy = point.Y - segmentstart.Y;
+				return Math.Sqrt(dx * dx + dy * dy);
+			}
+
+			// Calculate the t that minimizes the distance.
+			float t = ((point.X - segmentstart.X) * dx + (point.Y - segmentstart.Y) * dy) /
+				(dx * dx + dy * dy);
+
+			// See if this represents one of the segment's
+			// end points or a point in the middle.
+			if (t < 0)
+			{
+                closest = new Point(segmentstart.X, segmentstart.Y);
+				dx = point.X - segmentstart.X;
+				dy = point.Y - segmentstart.Y;
+			}
+			else if (t > 1)
+			{
+                closest = new Point(segmentend.X, segmentend.Y);
+				dx = point.X - segmentend.X;
+				dy = point.Y - segmentend.Y;
+			}
+			else
+			{
+                closest = new Point(
+                    (int)((segmentstart.X) + t * dx), 
+                    (int)((segmentstart.Y) + t * dy));
+				dx = point.X - closest.X;
+				dy = point.Y - closest.Y;
+			}
+
+			return Math.Sqrt(dx * dx + dy * dy);
+		}
+
         public override bool Geklikt(Point p) {
-
-			// algorithm based on https://stackoverflow.com/questions/328107/how-can-you-determine-a-point-is-between-two-other-points-on-a-line-segment
-
-			Point a = startpunt;
-            Point b = eindpunt;
-            Point c = p;
-
-            //float epsilon = 0.0000006F;
-
-            //float crossproduct = (c.Y - a.Y) * (b.X - a.X) - (c.X - a.X) * (b.Y - a.Y);
-            //if (Math.Abs(crossproduct) > epsilon) { return false; }
-
-            //float dotproduct = (c.X - a.X) * (b.X - a.X) + (c.Y - a.Y) * (b.Y - a.Y);
-            //if (dotproduct < 0) { return false; }
-
-            //float squaredlengthba = (b.X - a.X) * (b.X - a.X) + (b.Y - a.Y) * (b.Y - a.Y);
-            //if (dotproduct > squaredlengthba) { return false; }
-
-            //return true;
-
-            return (LijnObject.Afstand(a, c) + LijnObject.Afstand(c, b)) == LijnObject.Afstand(a, b);
+            return this.Afstand(p, startpunt, eindpunt) < 5;
 		}
     }
 
@@ -219,8 +237,8 @@ namespace SchetsEditor
 			Point center = new Point(rechthoek.X + rechthoek.Width / 2, rechthoek.Y + rechthoek.Height / 2);
 			double xRadius = rechthoek.Width / 2;
 			double yRadius = rechthoek.Height / 2;
-            double normalizedDistance = ((double)(normalized.X * normalized.X) / (xRadius * xRadius)) + ((double)(normalized.Y * normalized.Y) / (yRadius * yRadius));
             Point normalized = new Point(p.X - center.X, p.Y - center.Y);
+            double normalizedDistance = ((double)(normalized.X * normalized.X) / (xRadius * xRadius)) + ((double)(normalized.Y * normalized.Y) / (yRadius * yRadius));
             float marge = 0.05F;
 
 			if (pen != null)
