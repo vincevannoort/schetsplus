@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -38,7 +39,13 @@ namespace SchetsEditor
             }
         }
 
-        public void Teken(Graphics gr)
+		public void Teken()
+		{
+            this.Teken(BitmapGraphics);
+		}
+
+
+		public void Teken(Graphics gr)
         {
             gr.DrawImage(bitmap, 0, 0);
             foreach(SchetsObject actie in this.acties)
@@ -57,6 +64,22 @@ namespace SchetsEditor
         public void Roteer()
         {
             bitmap.RotateFlip(RotateFlipType.Rotate90FlipNone);
+        }
+
+        public void VerwijderSchetsObject(Point p)
+        {
+            Console.WriteLine("Alle objecten checken");
+            SchetsObject schetsobject;
+            foreach (SchetsObject actie in Enumerable.Reverse(this.acties))
+			{
+                if (actie.Geklikt(p)) { 
+                    Console.WriteLine("Object gevonden");
+                    schetsobject = actie; 
+                    acties.Remove(schetsobject);
+                    break;
+                }
+
+			}
         }
     }
 }

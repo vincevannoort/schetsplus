@@ -176,7 +176,7 @@ namespace SchetsEditor
 
 		public override void Compleet(Graphics g, Point p1, Point p2)
 		{
-            // g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
+			// g.FillEllipse(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
             this.VoegActieToe(new CirkelObject(kwast, p1, p2));
 		}
 	}
@@ -230,6 +230,11 @@ namespace SchetsEditor
         public GumTool(Schets s): base(s) { }
 
         public override string ToString() { return "gum"; }
+
+        public override void MuisVast(SchetsControl s, Point p) {
+            schets.VerwijderSchetsObject(p);  
+            s.Invalidate();
+        }
 
         public override void MuisDrag(SchetsControl s, Point p) { }
         public override void Letter(SchetsControl s, char c) { }
