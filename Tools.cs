@@ -68,7 +68,9 @@ namespace SchetsEditor
                 Font font = new Font("Tahoma", 40);
                 string tekst = c.ToString();
                 SizeF sz = gr.MeasureString(tekst, font, startpunt, StringFormat.GenericTypographic);
+
                 // gr.DrawString(tekst, font, kwast, startpunt, StringFormat.GenericTypographic);
+
                 startpunt.X += (int)sz.Width;
                 s.Invalidate();
 
@@ -147,7 +149,6 @@ namespace SchetsEditor
 
         public override void Compleet(Graphics g, Point p1, Point p2)
         {   
-            // g.FillRectangle(kwast, TweepuntTool.Punten2Rechthoek(p1, p2));
             this.VoegActieToe(new RechthoekObject(kwast, p1, p2));
         }
     }

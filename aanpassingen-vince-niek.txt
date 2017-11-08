@@ -1,7 +1,8 @@
-Makkelijk zien van de aanpassingen zie: https://github.com/vincevannoort/schetsplus
+Opmerkingen:
+- Aanpassingen ook te zien op: https://github.com/vincevannoort/schetsplus
+- De bezig functie van de tools liet op mac/linux niets zien zonder uberhaupt nog iets te hebben aangepast aan het basis programma. Het herimplementeren hiervan voor mac/linux is achterwege gelaten omdat dit niet bij de opdracht hoort.
 
 Aanpassingen op basis van opdrachten:
-
 # Opdracht 1 - Cirkels:
 - CirkelTool en VolCirkelTool toegevoegd aan Tools.cs
 - cirkel.png en volcirkel.png als iconen
