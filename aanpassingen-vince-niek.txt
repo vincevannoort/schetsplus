@@ -1,0 +1,26 @@
+Makkelijk zien van de aanpassingen zie: https://github.com/vincevannoort/schetsplus
+
+Aanpassingen op basis van opdrachten:
+
+# Opdracht 1 - Cirkels:
+- CirkelTool en VolCirkelTool toegevoegd aan Tools.cs
+- cirkel.png en volcirkel.png als iconen
+
+# Opdracht 2 - Opslaan en teruglezen:
+- Menu items toegevoegd aan Hoofdscherms.cs voor het importeren en exporteren en hier een switch statement voor gemaakt met de benodigde opslaan en import functies
+
+# Opdracht 3 - Het nieuwe gummen:
+- Een nieuw SchetsObject klasse aangemaakt waarin elke soort vorm een subklasse van Schetsobject is.
+- Bij elke aanroep van de functie compleet van een tool wordt een nieuw schetsobject toegevoegd aan de lijst van schetsobjecten
+- Voor elke vorm een functie gemaakt die kijkt of de vorm is geraakt door de gum
+- Door het gebruik van deze lijst kan tijdens het gummen worden gekeken (omgekeerd vanuit de array) of het object is geraakt door de gum.
+
+# opdracht 4 - Het nieuwe Opslaan en Lezen
+- Voor elk SchetsObject een ToString en ParseString functie zodat elk object naar een string kan worden om gezet en vice versa. 
+- Voor de rest bleef hierbij het opslaan en import gedeelte bijna gelijk op een check of de extentie een .sp file is na.
+
+# extra opdracht 1 - Undo knop
+- Undo knop toegevoegd aan de interface en gekoppeld aan een functie die een item van de tekenlijst van acties weghaald.
+
+# extra opdracht 2 - Lijndikte keuzemenu
+- Lijndikte keuzemenu toegevoegd die ook aan het object wordt doorgegeven
