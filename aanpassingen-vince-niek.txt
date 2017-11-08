@@ -11,7 +11,7 @@ Aanpassingen op basis van opdrachten:
 - Menu items toegevoegd aan Hoofdscherms.cs voor het importeren en exporteren en hier een switch statement voor gemaakt met de benodigde opslaan en import functies
 
 # Opdracht 3 - Het nieuwe gummen:
-- Een nieuw SchetsObject klasse aangemaakt waarin elke soort vorm een subklasse van Schetsobject is.
+- Een nieuw SchetsObject klasse (SchetsObject.cs) aangemaakt waarin elke soort vorm een subklasse van Schetsobject is.
 - Bij elke aanroep van de functie compleet van een tool wordt een nieuw schetsobject toegevoegd aan de lijst van schetsobjecten
 - Voor elke vorm een functie gemaakt die kijkt of de vorm is geraakt door de gum
 - Door het gebruik van deze lijst kan tijdens het gummen worden gekeken (omgekeerd vanuit de array) of het object is geraakt door de gum.
