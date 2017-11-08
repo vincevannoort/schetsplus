@@ -33,7 +33,7 @@ namespace SchetsEditor
         private void Importeren(object sender, EventArgs e)
         {
             OpenFileDialog openDialog = new OpenFileDialog();
-            openDialog.Filter = "PNG Images (*.png)|*.png|JPEG Images (*.jpg)|*.jpg|BMP Images (*.bmp)|*.bmp";
+            openDialog.Filter = "Schetsplus (*.sp)|*.sp|PNG Images (*.png)|*.png|JPEG Images (*.jpg)|*.jpg|BMP Images (*.bmp)|*.bmp";
             if (openDialog.ShowDialog() == DialogResult.OK 
                 && openDialog.FileName.Length > 0)
             {
@@ -48,8 +48,7 @@ namespace SchetsEditor
                 } 
                 else 
                 {
-                    // laad special bestand
-                    // activeChild.importeerSchets();
+                    activeChild.schetscontrol.Schets.Open(openDialog.FileName);
                 }
             }
         }
@@ -58,7 +57,7 @@ namespace SchetsEditor
         {
             SchetsWin activeChild = (SchetsWin) this.ActiveMdiChild;
             SaveFileDialog saveDialog = new SaveFileDialog();
-            saveDialog.Filter = "PNG Images (*.png)|*.png|JPEG Images (*.jpg)|*.jpg|BMP Images (*.bmp)|*.bmp";
+            saveDialog.Filter = "Schetsplus (*.sp)|*.sp|PNG Images (*.png)|*.png|JPEG Images (*.jpg)|*.jpg|BMP Images (*.bmp)|*.bmp";
             if (saveDialog.ShowDialog() == DialogResult.OK 
                 && saveDialog.FileName.Length > 0)
             {
@@ -67,12 +66,15 @@ namespace SchetsEditor
                 switch (saveDialog.FilterIndex)
                 {
                     case 1:
-                        bitmap.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
+                        activeChild.schetscontrol.Schets.Bewaar(saveDialog.FileName);
                         break;
                     case 2:
-                        bitmap.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        bitmap.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Png);
                         break;
                     case 3:
+                        bitmap.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        break;
+                    case 4:
                         bitmap.Save(saveDialog.FileName, System.Drawing.Imaging.ImageFormat.Bmp);
                         break;
                 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace SchetsEditor
 {
@@ -32,6 +33,8 @@ namespace SchetsEditor
         public abstract void Teken(Graphics g);
 
         public abstract bool Geklikt(Point p);
+
+        public abstract string ToString(char scheiding);
     }
 
     public class TekstObject : SchetsObject
@@ -53,6 +56,9 @@ namespace SchetsEditor
         }
 
         public override bool Geklikt(Point p) { return false; }
+
+        public override string ToString(char scheiding) { return "tekst" + scheiding + new Pen(kwast).Color.Name + scheiding + font + scheiding + tekst + scheiding + startpunt; }
+
     }
 
     public class LijnObject : SchetsObject
@@ -118,6 +124,22 @@ namespace SchetsEditor
         public override bool Geklikt(Point p) {
             return this.Afstand(p, startpunt, eindpunt) < 5;
 		}
+
+        public override string ToString(char scheiding) { return "lijn" + scheiding + pen.Color.Name + scheiding + pen.Width + scheiding + startpunt + scheiding + eindpunt; }
+
+        public static LijnObject ParseString(string[] lijn)
+        {
+			string[] regexPointA = Regex.Replace(lijn[3], @"[\{\}a-zA-Z=]", "").Split(',');
+			string[] regexPointB = Regex.Replace(lijn[4], @"[\{\}a-zA-Z=]", "").Split(',');
+			int r = Convert.ToInt32(lijn[1].Substring(2, 2), 16);
+			int g = Convert.ToInt32(lijn[1].Substring(4, 2), 16);
+			int b = Convert.ToInt32(lijn[1].Substring(6, 2), 16);
+            return new LijnObject(
+                new Pen(new SolidBrush(Color.FromArgb(r, g, b)), int.Parse(lijn[2])),
+                new Point(int.Parse(regexPointA[0]), int.Parse(regexPointA[1])),
+                new Point(int.Parse(regexPointB[0]), int.Parse(regexPointB[1]))
+            );
+        }
     }
 
 	public class PenObject : SchetsObject
@@ -148,6 +170,41 @@ namespace SchetsEditor
                 }
             }
             return false;
+        }
+
+        public override string ToString(char scheiding) {
+            String retValue = "";
+            retValue += "pen" + scheiding + pen.Color.Name + scheiding + pen.Width + scheiding;
+			foreach (LijnObject lijn in lijnen)
+			{
+                retValue += lijn.ToString(':') + ';';
+			}
+            return retValue;
+        }
+
+        public static PenObject ParseString(string[] lijn)
+        {
+            List<LijnObject> penLijnen = new List<LijnObject>();
+    		int r = Convert.ToInt32(lijn[1].Substring(2, 2), 16);
+    		int g = Convert.ToInt32(lijn[1].Substring(4, 2), 16);
+    		int b = Convert.ToInt32(lijn[1].Substring(6, 2), 16);
+
+            string[] penLijnenRegels = lijn[3].Split(';');
+            foreach(string penLijnRegel in penLijnenRegels)
+            {
+                string[] penLijnRegelArray = penLijnRegel.Split(':');
+                if (penLijnRegelArray[0] == "lijn")
+                {
+                    penLijnen.Add(LijnObject.ParseString(penLijnRegelArray));
+                }
+            }
+
+            return new PenObject(
+                new Pen(new SolidBrush(Color.FromArgb(r, g, b)), int.Parse(lijn[2])),
+                penLijnen,
+                new Point(0,0),
+                new Point(0,0)
+            );
         }
 	}
 
@@ -199,6 +256,40 @@ namespace SchetsEditor
                 }
             }
             return false;
+        }
+
+        public override string ToString(char scheiding) {
+			if (pen != null)
+			{
+                return "rechthoek" + scheiding + pen.Color.Name + scheiding + pen.Width + scheiding + startpunt + scheiding + eindpunt;
+			}
+
+            return "volrechthoek" + scheiding + new Pen(kwast).Color.Name + scheiding + startpunt + scheiding + eindpunt;
+        }
+
+        public static RechthoekObject ParseString(string[] lijn, bool vol)
+        {
+			int r = Convert.ToInt32(lijn[1].Substring(2, 2), 16);
+			int g = Convert.ToInt32(lijn[1].Substring(4, 2), 16);
+			int b = Convert.ToInt32(lijn[1].Substring(6, 2), 16);
+            int minus = (vol) ? 1 : 0;
+            string[] regexPointA = Regex.Replace(lijn[3 - minus], @"[\{\}a-zA-Z=]", "").Split(',');
+            string[] regexPointB = Regex.Replace(lijn[4 - minus], @"[\{\}a-zA-Z=]", "").Split(',');
+
+            if (!vol)
+            {
+                return new RechthoekObject(
+                    new Pen(new SolidBrush(Color.FromArgb(r, g, b)), int.Parse(lijn[2])),
+                    new Point(int.Parse(regexPointA[0]), int.Parse(regexPointA[1])),
+                    new Point(int.Parse(regexPointB[0]), int.Parse(regexPointB[1]))
+                );
+            } else {
+				return new RechthoekObject(
+					new SolidBrush(Color.FromArgb(r, g, b)),
+					new Point(int.Parse(regexPointA[0]), int.Parse(regexPointA[1])),
+					new Point(int.Parse(regexPointB[0]), int.Parse(regexPointB[1]))
+				);
+            }
         }
     }
 
@@ -252,5 +343,40 @@ namespace SchetsEditor
 
             return false;
         }
+
+        public override string ToString(char scheiding) {
+            if (pen != null)
+            {
+                return "cirkel" + scheiding + pen.Color.Name + scheiding + pen.Width + scheiding + startpunt + scheiding + eindpunt;
+            }
+            return "volcirkel" + scheiding + new Pen(kwast).Color.Name + scheiding + startpunt + scheiding + eindpunt;
+        }
+
+        public static CirkelObject ParseString(string[] lijn, bool vol)
+		{
+			int r = Convert.ToInt32(lijn[1].Substring(2, 2), 16);
+			int g = Convert.ToInt32(lijn[1].Substring(4, 2), 16);
+			int b = Convert.ToInt32(lijn[1].Substring(6, 2), 16);
+			int minus = (vol) ? 1 : 0;
+			string[] regexPointA = Regex.Replace(lijn[3 - minus], @"[\{\}a-zA-Z=]", "").Split(',');
+			string[] regexPointB = Regex.Replace(lijn[4 - minus], @"[\{\}a-zA-Z=]", "").Split(',');
+
+			if (!vol)
+			{
+				return new CirkelObject(
+					new Pen(new SolidBrush(Color.FromArgb(r, g, b)), int.Parse(lijn[2])),
+					new Point(int.Parse(regexPointA[0]), int.Parse(regexPointA[1])),
+					new Point(int.Parse(regexPointB[0]), int.Parse(regexPointB[1]))
+				);
+			}
+			else
+			{
+				return new CirkelObject(
+					new SolidBrush(Color.FromArgb(r, g, b)),
+					new Point(int.Parse(regexPointA[0]), int.Parse(regexPointA[1])),
+					new Point(int.Parse(regexPointB[0]), int.Parse(regexPointB[1]))
+				);
+			}
+		}
     }
 }

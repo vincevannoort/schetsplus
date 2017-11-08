@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
+using System.IO;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace SchetsEditor
 {
@@ -80,6 +82,53 @@ namespace SchetsEditor
                 }
 
 			}
+        }
+
+        public void Open(string filenaam)
+        {
+            StreamReader r = new StreamReader(filenaam);
+			string stream;
+            while ((stream = r.ReadLine()) != null)
+            {
+                string[] streamItems = stream.Split('|');
+
+                switch(streamItems[0])
+                {
+                    case "tekst":
+                        break;
+                    case "lijn":
+                        this.acties.Add(LijnObject.ParseString(streamItems));
+                        break;
+                    case "pen":
+                        this.acties.Add(PenObject.ParseString(streamItems));
+                        break;
+					case "rechthoek":
+                        this.acties.Add(RechthoekObject.ParseString(streamItems, false));
+						break;
+					case "volrechthoek":
+                        this.acties.Add(RechthoekObject.ParseString(streamItems, true));
+						break;
+					case "cirkel":
+                        this.acties.Add(CirkelObject.ParseString(streamItems, false));
+						break;
+					case "volcirkel":
+                        this.acties.Add(CirkelObject.ParseString(streamItems, true));
+						break;
+                }
+                Console.WriteLine();
+            }
+            this.Teken();
+            r.Close();
+        }
+
+        public void Bewaar(string filenaam)
+        {
+			StreamWriter w = new StreamWriter(filenaam);
+            foreach (SchetsObject actie in acties)
+            {
+                w.WriteLine(actie.ToString('|'));
+            }
+			w.Close();
         }
     }
 }
