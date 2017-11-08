@@ -56,6 +56,7 @@ namespace SchetsEditor
                                       new GumTool(schetscontrol.Schets) };
 
             String[] deKleuren = { "Black", "Red", "Green", "Blue", "Yellow", "Magenta", "Cyan" };
+            String[] deDiktes = { "slank", "normaal", "dik" };
 
             this.ClientSize = new Size(700, 500);
             huidigeTool = deTools[0];
@@ -84,9 +85,9 @@ namespace SchetsEditor
             this.Controls.Add(menuStrip);
             this.maakFileMenu();
             this.maakToolMenu(deTools);
-            this.maakAktieMenu(deKleuren);
+            this.maakAktieMenu(deKleuren, deDiktes);
             this.maakToolButtons(deTools);
-            this.maakAktieButtons(deKleuren);
+            this.maakAktieButtons(deKleuren, deDiktes);
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
         }
@@ -126,15 +127,19 @@ namespace SchetsEditor
             menuStrip.Items.Add(menu);
         }
 
-        private void maakAktieMenu(String[] kleuren)
+        private void maakAktieMenu(String[] kleuren, String[] diktes)
         {   
             ToolStripMenuItem menu = new ToolStripMenuItem("Aktie");
             menu.DropDownItems.Add("Clear", null, schetscontrol.Schoon );
             menu.DropDownItems.Add("Roteer", null, schetscontrol.Roteer );
-            ToolStripMenuItem submenu = new ToolStripMenuItem("Kies kleur");
+            ToolStripMenuItem submenu1 = new ToolStripMenuItem("Kies kleur");
             foreach (string k in kleuren)
-                submenu.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
-            menu.DropDownItems.Add(submenu);
+                submenu1.DropDownItems.Add(k, null, schetscontrol.VeranderKleurViaMenu);
+            menu.DropDownItems.Add(submenu1);
+			ToolStripMenuItem submenu2 = new ToolStripMenuItem("Kies dikte");
+			foreach (string d in diktes)
+				submenu2.DropDownItems.Add(d, null, schetscontrol.VeranderDikteViaMenu);
+			menu.DropDownItems.Add(submenu2);
             menuStrip.Items.Add(menu);
         }
 
@@ -159,7 +164,7 @@ namespace SchetsEditor
             }
         }
 
-        private void maakAktieButtons(String[] kleuren)
+        private void maakAktieButtons(String[] kleuren, String[] diktes)
         {   
             paneel = new Panel();
             paneel.Size = new Size(600, 24);
@@ -172,37 +177,52 @@ namespace SchetsEditor
             b.Click += schetscontrol.Schoon; 
             paneel.Controls.Add(b);
 
-			b = new Button();
-			b.Text = "Undo";
-			b.Location = new Point(400, 0);
-			b.Click += schetscontrol.Undo;
-			paneel.Controls.Add(b);
-
-			b = new Button();
-			b.Text = "Redo";
-			b.Location = new Point(480, 0);
-			//b.Click += schetscontrol.Schoon;
-			paneel.Controls.Add(b);
             
             b = new Button(); 
             b.Text = "Rotate"; 
             b.Location = new Point( 80, 0); 
             b.Click += schetscontrol.Roteer; 
             paneel.Controls.Add(b);
+
+			b = new Button();
+			b.Text = "Undo";
+			b.Location = new Point(160, 0);
+			b.Click += schetscontrol.Undo;
+			paneel.Controls.Add(b);
+
+			b = new Button();
+			b.Text = "Redo";
+			b.Location = new Point(240, 0);
+			//b.Click += schetscontrol.Schoon;
+			paneel.Controls.Add(b);
             
             l = new Label();  
-            l.Text = "Penkleur:"; 
-            l.Location = new Point(180, 3); 
+            l.Text = "Kleur:"; 
+            l.Location = new Point(340, 3); 
             l.AutoSize = true;               
             paneel.Controls.Add(l);
             
-            cbb = new ComboBox(); cbb.Location = new Point(240, 0); 
+            cbb = new ComboBox(); cbb.Location = new Point(380, 0); cbb.Size = new Size(60, 40); 
             cbb.DropDownStyle = ComboBoxStyle.DropDownList; 
             cbb.SelectedValueChanged += schetscontrol.VeranderKleur;
             foreach (string k in kleuren)
                 cbb.Items.Add(k);
             cbb.SelectedIndex = 0;
             paneel.Controls.Add(cbb);
+
+			l = new Label();
+			l.Text = "Dikte:";
+			l.Location = new Point(460, 3);
+			l.AutoSize = true;
+			paneel.Controls.Add(l);
+
+			cbb = new ComboBox(); cbb.Location = new Point(500, 0); cbb.Size = new Size(60, 40);
+			cbb.DropDownStyle = ComboBoxStyle.DropDownList;
+			cbb.SelectedValueChanged += schetscontrol.VeranderDikte;
+			foreach (string d in diktes)
+				cbb.Items.Add(d);
+			cbb.SelectedIndex = 1;
+			paneel.Controls.Add(cbb);
         }
     }
 }

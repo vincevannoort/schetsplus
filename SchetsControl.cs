@@ -7,10 +7,16 @@ namespace SchetsEditor
 {   public class SchetsControl : UserControl
     {   private Schets schets;
         private Color penkleur;
+        private int pendikte;
 
         public Color PenKleur
         { get { return penkleur; }
         }
+
+		public int PenDikte
+		{
+			get { return pendikte; }
+		}
 
         public Schets Schets
         { get { return schets;   }
@@ -22,6 +28,7 @@ namespace SchetsEditor
             this.Paint += this.teken;
             this.Resize += this.veranderAfmeting;
             this.veranderAfmeting(null, null);
+            this.pendikte = 3;
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
@@ -63,6 +70,42 @@ namespace SchetsEditor
         public void VeranderKleurViaMenu(object obj, EventArgs ea)
         {   string kleurNaam = ((ToolStripMenuItem)obj).Text;
             penkleur = Color.FromName(kleurNaam);
+        }
+
+		public void VeranderDikte(object obj, EventArgs ea)
+		{
+			string dikte = ((ComboBox)obj).Text;
+			if (dikte == "slank")
+			{
+				this.pendikte = 1;
+			}
+			else if (dikte == "normaal")
+			{
+				this.pendikte = 3;
+			}
+			else if (dikte == "dik")
+			{
+				this.pendikte = 5;
+			}
+
+		}
+
+        public void VeranderDikteViaMenu(object obj, EventArgs ea)
+        {
+            string dikte = ((ToolStripMenuItem)obj).Text;
+            if (dikte == "slank")
+            {
+                this.pendikte = 1;
+            }
+            else if (dikte == "normaal")
+            {
+                this.pendikte = 3;
+            }
+            else if (dikte == "dik")
+            {
+                this.pendikte = 5;
+            }
+
         }
 
 		public void Undo(object o, EventArgs ea)

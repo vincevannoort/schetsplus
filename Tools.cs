@@ -20,6 +20,7 @@ namespace SchetsEditor
         protected Schets schets;
         protected Point startpunt;
         protected Brush kwast;
+        protected int dikte;
 
 		public StartpuntTool(Schets s)
 		{
@@ -34,6 +35,7 @@ namespace SchetsEditor
         public virtual void MuisLos(SchetsControl s, Point p)
         {   
             kwast = new SolidBrush(s.PenKleur);
+            dikte = s.PenDikte;
         }
 
         public virtual void VoegActieToe(SchetsObject s)
@@ -133,7 +135,7 @@ namespace SchetsEditor
         public override void Compleet(Graphics g, Point p1, Point p2)
         {   
             this.Bezig(g, p1, p2);
-            this.VoegActieToe(new RechthoekObject(MaakPen(kwast, 3), p1, p2));
+            this.VoegActieToe(new RechthoekObject(MaakPen(kwast, dikte), p1, p2));
         }
     }
     
@@ -164,7 +166,7 @@ namespace SchetsEditor
         public override void Compleet(Graphics g, Point p1, Point p2)
         {   
             this.Bezig(g, p1, p2);
-            this.VoegActieToe(new CirkelObject(MaakPen(kwast, 3), p1, p2));
+            this.VoegActieToe(new CirkelObject(MaakPen(kwast, dikte), p1, p2));
         }
 	}
 
@@ -195,7 +197,7 @@ namespace SchetsEditor
         public override void Compleet(Graphics g, Point p1, Point p2)
         {
             this.Bezig(g, p1, p2);
-            this.VoegActieToe(new LijnObject(MaakPen(this.kwast,3), p1, p2));
+            this.VoegActieToe(new LijnObject(MaakPen(this.kwast, dikte), p1, p2));
         }
     }
 
@@ -215,13 +217,13 @@ namespace SchetsEditor
 
         public override void MuisDrag(SchetsControl s, Point p)
         {
-            lijnen.Add(new LijnObject(MaakPen(this.kwast, 3), startpunt, p));
+            lijnen.Add(new LijnObject(MaakPen(this.kwast, dikte), startpunt, p));
             startpunt = p;
         }
 
 		public override void Compleet(Graphics g, Point p1, Point p2)
 		{
-            this.VoegActieToe(new PenObject(MaakPen(this.kwast, 3), lijnen, p1, p2));
+            this.VoegActieToe(new PenObject(MaakPen(this.kwast, dikte), lijnen, p1, p2));
 		}
     }
     
